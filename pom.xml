@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nlpcn</groupId>
 	<artifactId>elasticsearch-sql</artifactId>
-	<version>5.1.1.0</version>
+	<version>5.1.1.01</version>
 	<packaging>jar</packaging>
 	<description>Query elasticsearch using SQL</description>
 	<name>elasticsearch-sql</name>
@@ -292,35 +292,48 @@
 					</includes>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.4</version>
-				<executions>
-					<execution>
-						<id>sign-artifacts</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>sign</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+			<!--<plugin>-->
+				<!--<groupId>org.apache.maven.plugins</groupId>-->
+				<!--<artifactId>maven-gpg-plugin</artifactId>-->
+				<!--<version>1.4</version>-->
+				<!--<executions>-->
+					<!--<execution>-->
+						<!--<id>sign-artifacts</id>-->
+						<!--<phase>verify</phase>-->
+						<!--<goals>-->
+							<!--<goal>sign</goal>-->
+						<!--</goals>-->
+					<!--</execution>-->
+				<!--</executions>-->
+			<!--</plugin>-->
 		</plugins>
 
 	</build>
 	
+	<!--<distributionManagement>-->
+		<!--<snapshotRepository>-->
+			<!--<id>sonatype-nexus-snapshots</id>-->
+			<!--<name>Sonatype Nexus snapshot repository</name>-->
+			<!--<url>https://oss.sonatype.org/content/repositories/snapshots</url>-->
+		<!--</snapshotRepository>-->
+
+		<!--<repository>-->
+			<!--<id>sonatype-nexus-staging</id>-->
+			<!--<name>Sonatype Nexus release repository</name>-->
+			<!--<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>-->
+		<!--</repository>-->
+	<!--</distributionManagement>-->
+
 	<distributionManagement>
 		<snapshotRepository>
-			<id>sonatype-nexus-snapshots</id>
-			<name>Sonatype Nexus snapshot repository</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<id>clude-snapshots</id>
+			<name>clude snapshots</name>
+			<url>http://10.57.115.230/artifactory/libs-snapshot-local</url>
 		</snapshotRepository>
-
 		<repository>
-			<id>sonatype-nexus-staging</id>
-			<name>Sonatype Nexus release repository</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+			<id>releases</id>
+			<name>clude artifactory release repository</name>
+			<url>http://10.57.115.230/artifactory/libs-release-local</url>
 		</repository>
 	</distributionManagement>
 
