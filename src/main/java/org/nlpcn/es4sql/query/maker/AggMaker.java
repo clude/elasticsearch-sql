@@ -20,6 +20,7 @@ import org.elasticsearch.search.aggregations.bucket.range.RangeAggregationBuilde
 import org.elasticsearch.search.aggregations.bucket.range.date.DateRangeAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.cardinality.CardinalityAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.geobounds.GeoBoundsAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.percentiles.PercentilesAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.scripted.ScriptedMetricAggregationBuilder;
@@ -570,14 +571,22 @@ public class AggMaker {
 
         // Cardinality is approximate DISTINCT.
         if ("DISTINCT".equals(field.getOption())) {
-
-            if (field.getParams().size() == 1) {
-                return AggregationBuilders.cardinality(field.getAlias()).field(field.getParams().get(0).value.toString());
-            } else {
+            CardinalityAggregationBuilder builder = AggregationBuilders.cardinality(field.getAlias());
+            if(field.getParams().size() > 1){
                 Integer precision_threshold = (Integer) (field.getParams().get(1).value);
-                return AggregationBuilders.cardinality(field.getAlias()).precisionThreshold(precision_threshold).field(field.getParams().get(0).value.toString());
+                builder = builder.precisionThreshold(precision_threshold);
             }
 
+            KVValue kvValue = field.getParams().get(0);
+            if (kvValue.key != null && kvValue.key.equals("script")) {
+                if (kvValue.value instanceof MethodField) {
+                    return builder.script(new Script(((MethodField) kvValue.value).getParams().get(1).toString()));
+                } else {
+                    return builder.script(new Script(kvValue.value.toString()));
+                }
+            }else{
+                return builder.field(kvValue.value.toString());
+            }
         }
 
         String fieldName = field.getParams().get(0).value.toString();
