@@ -1,10 +1,8 @@
 package com.alibaba.druid.pool;
 
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.plugin.nlpcn.QueryActionElasticExecutor;
-import org.elasticsearch.plugin.nlpcn.executors.CSVResult;
-import org.elasticsearch.plugin.nlpcn.executors.CSVResultsExtractor;
 import org.elasticsearch.plugin.nlpcn.executors.CsvExtractorException;
 import org.nlpcn.es4sql.SearchDao;
 import org.nlpcn.es4sql.exception.SqlParseException;
@@ -46,8 +44,9 @@ public class ElasticSearchDruidPooledPreparedStatement extends DruidPooledPrepar
             ObjectResult extractor = getObjectResult(true, getSql(), false, false, true);
             List<String> headers = extractor.getHeaders();
             List<List<Object>> lines = extractor.getLines();
+            long totalHits = extractor.getTotalHits();
 
-            ResultSet rs = new ElasticSearchResultSet(this, headers, lines);
+            ResultSet rs = new ElasticSearchResultSet(this, headers, lines, totalHits);
 
             if (rs == null) {
                 return null;

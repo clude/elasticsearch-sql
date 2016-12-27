@@ -3,6 +3,7 @@ package com.alibaba.druid.pool;
 import com.alibaba.druid.util.jdbc.ResultSetBase;
 import com.alibaba.druid.util.jdbc.ResultSetMetaDataBase;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,19 @@ import java.util.List;
  */
 public class ElasticSearchResultSetMetaDataBase extends ResultSetMetaDataBase {
     private final List<ColumnMetaData> columns = new ArrayList<ColumnMetaData>();
+
+    public List<ColumnMetaData> getColumns() {
+        return columns;
+    }
+
+    public int getColumnCount() throws SQLException {
+        return this.columns.size();
+    }
+
+    public ColumnMetaData getColumn(int column) {
+        return this.columns.get(column - 1);
+    }
+
 
     public ElasticSearchResultSetMetaDataBase(List<String> headers) {
         for(String column:headers){

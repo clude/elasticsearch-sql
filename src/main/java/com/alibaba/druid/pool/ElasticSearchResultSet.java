@@ -20,6 +20,7 @@ public class ElasticSearchResultSet implements ResultSet {
     Iterator<List<Object>> iterator;
     List<Object> current = null;
     List<String> headers = null;
+    long totalHits;
 
 
     private ResultSetMetaData metaData;
@@ -30,6 +31,29 @@ public class ElasticSearchResultSet implements ResultSet {
         metaData = new ElasticSearchResultSetMetaDataBase(headers);
 
     }
+
+    public ElasticSearchResultSet(Statement statement, final List<String> headers, final List<List<Object>> lines, long totalHits) {
+        this.iterator = lines.iterator();
+        this.headers = headers;
+        metaData = new ElasticSearchResultSetMetaDataBase(headers);
+        this.totalHits = totalHits;
+
+    }
+
+    // clude -- added - begin
+    public List<String> getHeaders() {
+        return headers;
+    }
+
+    public long getTotalHits() {
+        return totalHits;
+    }
+
+    public void setTotalHits(long totalHits) {
+        this.totalHits = totalHits;
+    }
+
+    // clude -- added - end
 
     @Override
     public boolean next() throws SQLException {
