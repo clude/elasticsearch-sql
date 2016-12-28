@@ -1,6 +1,7 @@
 package org.nlpcn.es4sql.query.maker;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 
 import com.alibaba.druid.sql.ast.SQLExpr;
@@ -60,6 +61,8 @@ public abstract class Maker {
         }
         else if (value instanceof SubQueryExpression){
             x = make(cond,name,((SubQueryExpression)value).getValues());
+        }else if (value instanceof BigDecimal){  // clude: fix a issue like where > 1.01
+            x = make(cond,name,((BigDecimal)value).doubleValue());
         } else {
 			x = make(cond, name, value);
 		}
